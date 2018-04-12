@@ -2,7 +2,7 @@ const express = require('express')
 
 const app = express()
 
-arr=['dasdas','hello','bye'];
+arr=[];
 
 app.use(function (req, res, next) {
     console.log("Server Running on port: 8181")
@@ -28,13 +28,34 @@ app.get('/todos/add', (req, res) => {
 
 })
 
+app.get('/todos/delete', (req, res,next) => {
+  
+    if(req.query.id==null || req.query.id>arr.length-1 || req.query.id<=-1)
+    res.send("Invalid index")
+    else
+    next()
+
+})
 app.get('/todos/delete', (req, res) => {
   
     arr.splice(req.query.id,1);
     res.send("deleted")
 
 })
+app.get('/todos/update', (req, res,next) => {
+  
+    if(req.query.task==null || req.query.task=="")
+    {
+        res.send("no task found")
+    }
+    else if(req.query.id==null || req.query.id>arr.length-1 || req.query.id<=-1)
+    {
+        res.send("Invalid index")
+    }
+    else
+   next()
 
+})
 app.get('/todos/update', (req, res) => {
   
     arr.splice(req.query.id,1,req.query.task);
@@ -47,5 +68,9 @@ app.use(function (req, res) {
     res.status(404).send("<h1>No such page found</h1>")
 })
 
-sa
+
 app.listen(8181)
+
+
+
+
